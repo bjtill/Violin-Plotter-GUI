@@ -1,0 +1,35 @@
+Violin Plotter (ViP) Version 1.2
+Script Started Thu 28 Dec 2023 10:22:28 AM PST.
+Saving 7 x 7 in image
+User-selected plotting parameters:
+Initials of user:  BT
+Location and name of data file:  /home/brad/Downloads/GUIPlotter/TestingFiles/ExampleData_NoReps.csv
+ User-defined replicates:  NO
+ User changed samples or order:  NO
+X-axis label:   Sample
+Y-axis label:  Value
+Plot title:  Data
+ Plot fill color:  #5f9ea0
+Opacity of plot fill:  0.5
+Size of dots:  0.4
+Fill olor of dots if available:  #808080
+Outline color of dots if available:  #808080
+Opacity of dots:  0.3
+Color of mean and stdev bars:  #b22222
+Opacity of mean and stdev bars:  0.7
+Format of saved plot:  jpeg
+DPI of saved plot: 300
+ 
+R code used to make the plot:
+library(ggplot2) 
+data<-read.csv("FormattedData4plot.csv")
+p <- ggplot(data, aes(x=Sample, y=Value)) + geom_violin(trim=FALSE, fill="#5f9ea0", alpha=0.5) + geom_dotplot(binaxis="y", stackdir="center", dotsize=0.4, fill="#808080", color="#808080", alpha=0.3) + labs(title= "Data") + xlab("Sample") + ylab("Value")
+data_summary <- function(x) { 
+m <- mean(x) 
+ymin <- m-sd(x) 
+ymax <- m+sd(x) 
+ymax <- m+sd(x) 
+return(c(y=m,ymin=ymin,ymax=ymax)) 
+} 
+p1 <- p + stat_summary(fun.data=data_summary, color="#b22222", geom = "pointrange", alpha=0.7) 
+ggsave(plot = p1, dpi=300, filename= "Data_2023-12-28.jpeg")
